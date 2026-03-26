@@ -143,7 +143,7 @@ function DictPage({ onSelectIdiom }: { onSelectIdiom: (idiom: typeof idioms[0]) 
     const matchCategory = category === '全部' || i.category === category;
     const matchLevel = level === 'all' || i.level === level;
     return matchSearch && matchCategory && matchLevel;
-  }).slice(0, 100);
+  });
 
   return (
     <div className="page">
@@ -164,7 +164,7 @@ function DictPage({ onSelectIdiom }: { onSelectIdiom: (idiom: typeof idioms[0]) 
           ))}
         </div>
       </div>
-      <div style={{ fontSize: '13px', color: 'var(--color-text-light)', marginBottom: '12px' }}>共 {filtered.length} 条成语</div>
+      <div style={{ fontSize: '13px', color: 'var(--color-text-light)', marginBottom: '12px' }}>共 {idioms.length} 条成语（当前显示 {filtered.length} 条）</div>
       {filtered.map((idiom, index) => (
         <div key={index} className="idiom-card" onClick={() => onSelectIdiom(idiom)}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
