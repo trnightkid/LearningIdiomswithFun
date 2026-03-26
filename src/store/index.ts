@@ -1,25 +1,51 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+// 用户学习记录
 interface StudyRecord {
-  date: string;
-  count: number;
-  idioms: string[];
+  date: string; // YYYY-MM-DD
+  count: number; // 今日学习数量
+  idioms: string[]; // 今日学过的成语ID列表
 }
 
 interface UserState {
+  // 打卡记录
   records: Record<string, StudyRecord>;
+  
+  // 当前 streak（连续打卡天数）
   currentStreak: number;
+  
+  // 已收藏的成语
   favorites: string[];
+  
+  // 已学习的成语
   learnedIds: string[];
+  
+  // 今日已练习
   todayPracticed: boolean;
+  
+  // 复习本（错题）
   reviewIds: string[];
+  
+  // streak 计算
   calculateStreak: () => void;
+  
+  // 添加学习记录
   addStudyRecord: (idiomWord: string) => void;
+  
+  // 切换收藏
   toggleFavorite: (word: string) => void;
+  
+  // 标记已学习
   markLearned: (idiomWord: string) => void;
+  
+  // 添加到复习本
   addToReview: (idiomWord: string) => void;
+  
+  // 打卡
   checkIn: () => void;
+  
+  // 重置数据
   reset: () => void;
 }
 
@@ -44,6 +70,7 @@ export const useStore = create<UserState>()(
         const today = getToday();
         let checkDate = today;
         
+        // 如果今天没打卡，从昨天开始算
         if (!records[today]) {
           const yesterday = new Date();
           yesterday.setDate(yesterday.getDate() - 1);
@@ -74,7 +101,10 @@ export const useStore = create<UserState>()(
           todayRecord.count = todayRecord.idioms.length;
         }
         
-        set({ records: { ...records, [today]: todayRecord } });
+        set({
+          records: { ...records, [today]: todayRecord },
+        });
+        
         get().calculateStreak();
       },
 
@@ -105,7 +135,7 @@ export const useStore = create<UserState>()(
         const today = getToday();
         const { records } = get();
         const todayRecord = records[today] || { date: today, count: 0, idioms: [] };
-        todayRecord.count = Math.max(todayRecord.count, 3);
+        todayRecord.count = Math.max(todayRecord.count, 3); // 确保至少3条
         set({ records: { ...records, [today]: todayRecord } });
         get().calculateStreak();
       },
@@ -121,6 +151,8 @@ export const useStore = create<UserState>()(
         });
       },
     }),
-    { name: 'chengyu-storage' }
+    {
+      name: 'chengyu-storage',
+    }
   )
 );
