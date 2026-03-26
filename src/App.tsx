@@ -20,8 +20,14 @@ function HomePage() {
   const todayRecord = records[today];
   
   const dailyQuote = [
-    "每天学三个成语，积少成多 ✨", "温故而知新，可以为师矣 📚",
-    "成语是中华文化的精华 🌟", "坚持打卡，成为成语小达人 💪",
+    "每天学3个成语，就能变成成语小天才！🌟",
+    "今天也要加油呀！多学一个成语就进步一点点 🚀",
+    "成语学好后写作文更厉害，同学都会佩服你！✨",
+    "坚持每天学，成语达人就是你！💪",
+    "学的越多懂得越多，你是最棒的小学者！🏆",
+    "每天进步一点点，成就感满满！🎉",
+    "掌握更多成语，说话都变得更厉害！😎",
+    "今天也要加油，成为最闪亮的成语之星！⭐",
   ];
   const quote = dailyQuote[new Date().getDay() % dailyQuote.length];
 
@@ -232,7 +238,7 @@ function PracticePage({ onBack }: { onBack: () => void }) {
   const [options, setOptions] = useState<string[]>([]);
   
   const initQuiz = () => {
-    const shuffled = [...idioms].sort(() => Math.random() - 0.5).slice(0, 5);
+    const shuffled = [...idioms].sort(() => Math.random() - 0.5).slice(0, 30);
     setQuizzes(shuffled);
     setCurrent(0); setScore(0); setShowResult(false); setSelected(null);
     generateOptions(shuffled[0]);
