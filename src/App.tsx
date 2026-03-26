@@ -3,6 +3,108 @@ import './styles/global.css';
 import { idioms } from './data/idioms';
 import { useStore } from './store';
 
+const VALID_USER = { username: 'Celine', password: '20140702' };
+
+function LoginPage({ onLogin }: { onLogin: () => void }) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleLogin = () => {
+    if (username === VALID_USER.username && password === VALID_USER.password) {
+      localStorage.setItem('chengyu_logged_in', 'true');
+      onLogin();
+    } else {
+      setError('用户名或密码错误');
+    }
+  };
+
+  return (
+    <div style={{ 
+      minHeight: '100vh', 
+      display: 'flex', 
+      flexDirection: 'column', 
+      alignItems: 'center', 
+      justifyContent: 'center',
+      padding: '20px',
+      background: 'linear-gradient(135deg, #4A7C59 0%, #6B9B7A 100%)',
+    }}>
+      <div style={{ 
+        background: 'white', 
+        borderRadius: '20px', 
+        padding: '40px 30px', 
+        width: '100%', 
+        maxWidth: '320px',
+        boxShadow: '0 10px 40px rgba(0,0,0,0.2)',
+      }}>
+        <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+          <div style={{ fontSize: '48px', marginBottom: '10px' }}>📚</div>
+          <h1 style={{ fontSize: '24px', color: '#4A7C59', fontWeight: 700 }}>成语趣学</h1>
+          <p style={{ color: '#7A7A7A', fontSize: '14px', marginTop: '8px' }}>请登录后开始学习</p>
+        </div>
+        
+        <div style={{ marginBottom: '20px' }}>
+          <input
+            type="text"
+            placeholder="用户名"
+            value={username}
+            onChange={e => { setUsername(e.target.value); setError(''); }}
+            style={{
+              width: '100%',
+              padding: '14px 16px',
+              border: '2px solid #E8E0D0',
+              borderRadius: '12px',
+              fontSize: '15px',
+              boxSizing: 'border-box',
+            }}
+          />
+        </div>
+        
+        <div style={{ marginBottom: '20px' }}>
+          <input
+            type="password"
+            placeholder="密码"
+            value={password}
+            onChange={e => { setPassword(e.target.value); setError(''); }}
+            onKeyDown={e => e.key === 'Enter' && handleLogin()}
+            style={{
+              width: '100%',
+              padding: '14px 16px',
+              border: '2px solid #E8E0D0',
+              borderRadius: '12px',
+              fontSize: '15px',
+              boxSizing: 'border-box',
+            }}
+          />
+        </div>
+        
+        {error && (
+          <div style={{ color: '#D4644C', fontSize: '14px', textAlign: 'center', marginBottom: '16px' }}>
+            {error}
+          </div>
+        )}
+        
+        <button
+          onClick={handleLogin}
+          style={{
+            width: '100%',
+            padding: '14px',
+            background: '#4A7C59',
+            color: 'white',
+            border: 'none',
+            borderRadius: '12px',
+            fontSize: '16px',
+            fontWeight: 600,
+            cursor: 'pointer',
+          }}
+        >
+          登录
+        </button>
+      </div>
+    </div>
+  );
+}
+
 const Icon = ({ name }: { name: string }) => {
   const icons: Record<string, string> = {
     book: '📖', check: '✅', quiz: '🎯', star: '⭐', home: '🏠',
@@ -499,8 +601,15 @@ function FavoritesPage({ onSelectIdiom }: { onSelectIdiom: (idiom: typeof idioms
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [selectedIdiom, setSelectedIdiom] = useState<typeof idioms[0] | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    return localStorage.getItem('chengyu_logged_in') === 'true';
+  });
   
   const handleSelectIdiom = (idiom: typeof idioms[0]) => setSelectedIdiom(idiom);
+  
+  if (!isLoggedIn) {
+    return <LoginPage onLogin={() => setIsLoggedIn(true)} />;
+  }
   
   if (selectedIdiom) return <IdiomDetailPage idiom={selectedIdiom} onBack={() => setSelectedIdiom(null)} />;
   
