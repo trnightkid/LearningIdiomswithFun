@@ -13,7 +13,6 @@ I developed this app for my daughter Celine, hoping she can gain more life insig
 - 🚀 **成语数据库全面升级**：从原来的166条扩展至 **30,895条** 全量成语，数据来源于热门的 chinese-xinhua 开源项目
 - ✨ **首页标语优化**：采用更适合小学生的激励话语，充满正能量和鼓励
 - 📝 **每日一练**：每次练习题数量从5道提升至30道，让学习更充实
-- 🔐 **登录功能**：用户名 Celine，密码 20140702
 
 ## 主要功能
 
